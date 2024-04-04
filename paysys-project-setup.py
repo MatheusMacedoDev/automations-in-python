@@ -15,8 +15,16 @@ class PaySysSetup:
 
         self.open_neovim_project(self.project_path)
 
+        self.startTmux()
+
+    def startTmux(self):
         self.open_new_terminal_window()
+
         self.execute_in_terminal(f'cd {self.project_path}')
+
+        self.create_tmux_session('Backend')
+        self.close_tmux_session()
+        self.create_tmux_session('Commands')
 
     def open_program_by_search(self, program_name):
         pa.press('win')
@@ -48,6 +56,11 @@ class PaySysSetup:
         pa.press('enter')
 
         time.sleep(.5)
+
+    def close_tmux_session(self):
+        pa.hotkey('ctrl', 'b')
+        time.sleep(.5)
+        pa.press('d')
 
 
     
