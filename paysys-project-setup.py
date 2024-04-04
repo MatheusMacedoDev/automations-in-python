@@ -24,6 +24,8 @@ class PaySysSetup:
 
         self.alternate_terminal_tab()
 
+        time.sleep(1.5)
+
         self.minimaze_docker_window()
         self.close_vscodium_window()
 
@@ -50,7 +52,7 @@ class PaySysSetup:
         pa.write(program_name)
         pa.press('enter')
 
-        time.sleep(.5)
+        time.sleep(1)
 
 
     def execute_in_terminal(self, command):
