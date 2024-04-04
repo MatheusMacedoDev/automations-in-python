@@ -22,6 +22,11 @@ class PaySysSetup:
         self.startTmux()
         self.startDocker()
 
+        self.alternate_terminal_tab()
+
+        self.minimaze_docker_window()
+        self.close_vscodium_window()
+
 
     def startTmux(self):
         self.open_new_terminal_window()
@@ -36,6 +41,8 @@ class PaySysSetup:
     def startDocker(self):
         self.start_docker_container(self.postgres_container)
         self.start_docker_container(self.pg_admin_container)
+
+        self.clear_terminal()
 
 
     def open_program_by_search(self, program_name):
@@ -84,6 +91,25 @@ class PaySysSetup:
         clipboard.copy(f'docker start {container}')
         pa.hotkey('ctrl', 'v')
         pa.press('enter')
+
+
+    def clear_terminal(self):
+        pa.write('clear')
+        pa.press('enter')
+
+    
+    def alternate_terminal_tab(self):
+        pa.hotkey('ctrl', 'tab')
+
+
+    def minimaze_docker_window(self):
+        pa.hotkey('alt', 'tab')
+        pa.hotkey('alt', 'F4')
+
+
+    def close_vscodium_window(self):
+        pa.hotkey('alt', 'tab')
+        pa.hotkey('alt', 'F4')
 
 
     
