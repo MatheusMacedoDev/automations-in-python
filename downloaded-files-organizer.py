@@ -19,10 +19,6 @@ class Setup:
 
         self.all_files = self.list_all_downloaded_files()
 
-        self.jpeg_pattern = create_file_format_pattern('jpeg')
-        self.jpg_pattern = create_file_format_pattern('jpg')
-        self.png_pattern = create_file_format_pattern('png')
-        self.svg_pattern = create_file_format_pattern('svg')
         self.exe_pattern = create_file_format_pattern('exe')
         self.xlsx_pattern = create_file_format_pattern('xlsx')
         self.pptx_pattern = create_file_format_pattern('pptx')
@@ -40,7 +36,8 @@ class Setup:
         self.compacted_group = []
 
         self.file_groups = [
-            PdfGroup()
+            PdfGroup(),
+            ImageGroup()
         ]
 
         for file in self.all_files:
@@ -50,6 +47,7 @@ class Setup:
             self.all_files.remove(file)
                 
         for file_group in self.file_groups:
+            print(f'\n-----  {file_group.folder_group_name}  -----')
             print(file_group.file_group_list)
 
     
@@ -84,6 +82,7 @@ class FileGroup:
 
 
 class PdfGroup(FileGroup):
+
     def __init__(self):
 
         pdf_pattern = create_file_format_pattern('pdf')
@@ -93,6 +92,27 @@ class PdfGroup(FileGroup):
         ]
 
         super().__init__('PDFs', patterns_list)
+
+
+
+class ImageGroup(FileGroup):
+
+    def __init__(self):
+
+        jpeg_pattern = create_file_format_pattern('jpeg')
+        jpg_pattern = create_file_format_pattern('jpg')
+        png_pattern = create_file_format_pattern('png')
+        svg_pattern = create_file_format_pattern('svg')
+
+        patterns_list = [
+            jpeg_pattern,
+            jpg_pattern,
+            png_pattern,
+            svg_pattern
+        ]
+
+        super().__init__('Images', patterns_list)
+
 
 
 
