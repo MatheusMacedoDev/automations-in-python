@@ -1,5 +1,7 @@
 import os
 import re
+import shutil
+from pathlib import Path
 
 # Idea
 # - List all files
@@ -30,7 +32,7 @@ class Setup:
         ]
 
         for file in self.all_files:
-            print(file)
+
             for file_group in self.file_groups:
                 is_matching = file_group.filter_file(file)
 
@@ -41,11 +43,15 @@ class Setup:
                 
         for file_group in self.file_groups:
             print(f'\n-----  {file_group.folder_group_name}  -----\n')
-            print(file_group.file_group_list)
+            print(file_group.group_file_list)
 
         print(f'\n-----  Remaining files  -----\n')
         print(self.remaining_files)
         print()
+
+        for file_group in self.file_groups:
+            file_group.create_directory_if_not_exist()
+            file_group.move_to_correct_directory()
 
     
     def list_all_downloaded_files(self):
@@ -55,12 +61,10 @@ class Setup:
             for entry in entries:
                 if re.match(self.is_file_pattern, entry.name):
                     file_name = entry.name
+                    files_list.append(file_name)
 
-                files_list.append(file_name)
 
         return files_list
-    
-
 
 
 
@@ -68,18 +72,29 @@ class FileGroup:
 
     def __init__(self, folder_group_name, file_format_patterns_list):
         self.folder_group_name = folder_group_name
+        self.folder_path_text = f'{download_directory_path}/{self.folder_group_name}'
         self.file_format_patterns_list = file_format_patterns_list
-        self.file_group_list = []
+        self.group_file_list = []
 
     def filter_file(self, file_name):
 
         for file_format_pattern in self.file_format_patterns_list:
 
             if re.match(file_format_pattern, file_name):
-                self.file_group_list.append(file_name)
+                self.group_file_list.append(file_name)
                 return True
 
         return False
+
+    def create_directory_if_not_exist(self):
+        directory_path = Path(self.folder_path_text)
+        directory_path.mkdir(exist_ok=True)
+
+    def move_to_correct_directory(self):
+
+        for file in self.group_file_list:
+            file_path = f'{download_directory_path}/{file}'
+            shutil.move(file_path, self.folder_path_text)
 
 
 
