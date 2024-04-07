@@ -18,9 +18,7 @@ class Setup:
         self.is_file_pattern = r'^[\d\w\s\.\-\+\_\(\)\[\]]+\.[0-9a-z]{2,5}$'
 
         self.all_files = self.list_all_downloaded_files()
-
-        self.os_image_group = []
-        self.compacted_group = []
+        self.remaining_files = self.all_files.copy()
 
         self.file_groups = [
             PdfGroup(),
@@ -32,17 +30,22 @@ class Setup:
         ]
 
         for file in self.all_files:
+            print(file)
             for file_group in self.file_groups:
-                file_group.filter_file(file)
+                is_matching = file_group.filter_file(file)
 
-            self.all_files.remove(file)
+                if is_matching:
+                    self.remaining_files.remove(file)
+                    break
+
                 
         for file_group in self.file_groups:
             print(f'\n-----  {file_group.folder_group_name}  -----\n')
             print(file_group.file_group_list)
 
-        print(f'\n-----  All files  -----\n')
-        print(self.all_files)
+        print(f'\n-----  Remaining files  -----\n')
+        print(self.remaining_files)
+        print()
 
     
     def list_all_downloaded_files(self):
@@ -69,9 +72,14 @@ class FileGroup:
         self.file_group_list = []
 
     def filter_file(self, file_name):
+
         for file_format_pattern in self.file_format_patterns_list:
+
             if re.match(file_format_pattern, file_name):
                 self.file_group_list.append(file_name)
+                return True
+
+        return False
 
 
 
