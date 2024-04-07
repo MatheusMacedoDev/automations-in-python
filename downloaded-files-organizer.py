@@ -19,11 +19,6 @@ class Setup:
 
         self.all_files = self.list_all_downloaded_files()
 
-        self.iso_pattern = create_file_format_pattern('iso')
-        self.part_pattern = create_file_format_pattern('part')
-        self.zip_pattern = create_file_format_pattern('zip')
-        self.seven_zip_pattern = create_file_format_pattern('7z')
-
         self.os_image_group = []
         self.compacted_group = []
 
@@ -31,7 +26,9 @@ class Setup:
             PdfGroup(),
             ImageGroup(),
             ExecutableGroup(),
-            OfficeGroup()
+            OfficeGroup(),
+            OSImageGroup(),
+            CompactedGroup()
         ]
 
         for file in self.all_files:
@@ -139,6 +136,38 @@ class OfficeGroup(FileGroup):
         ]
 
         super().__init__('Office', patterns_list)
+
+
+
+class OSImageGroup(FileGroup):
+
+    def __init__(self):
+
+        iso_pattern = create_file_format_pattern('iso')
+        part_pattern = create_file_format_pattern('part')
+
+        patterns_list = [
+            iso_pattern,
+            part_pattern
+        ]
+
+        super().__init__('OSImages', patterns_list)
+
+
+
+class CompactedGroup(FileGroup):
+
+    def __init__(self):
+
+        zip_pattern = create_file_format_pattern('zip')
+        seven_zip_pattern = create_file_format_pattern('7z')
+
+        patterns_list = [
+            zip_pattern,
+            seven_zip_pattern
+        ]
+
+        super().__init__('Compacted', patterns_list)
 
 
 
