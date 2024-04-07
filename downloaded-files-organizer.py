@@ -27,9 +27,6 @@ class Setup:
         self.zip_pattern = create_file_format_pattern('zip')
         self.seven_zip_pattern = create_file_format_pattern('7z')
 
-        self.image_group = []
-        self.exe_group = []
-        self.pdf_group = []
         self.spreadsheet_group = []
         self.os_image_group = []
         self.slides_group = []
@@ -37,7 +34,8 @@ class Setup:
 
         self.file_groups = [
             PdfGroup(),
-            ImageGroup()
+            ImageGroup(),
+            ExecutableGroup()
         ]
 
         for file in self.all_files:
@@ -47,7 +45,7 @@ class Setup:
             self.all_files.remove(file)
                 
         for file_group in self.file_groups:
-            print(f'\n-----  {file_group.folder_group_name}  -----')
+            print(f'\n-----  {file_group.folder_group_name}  -----\n')
             print(file_group.file_group_list)
 
     
@@ -113,6 +111,19 @@ class ImageGroup(FileGroup):
 
         super().__init__('Images', patterns_list)
 
+
+
+class ExecutableGroup(FileGroup):
+
+    def __init__(self):
+
+        exe_pattern = create_file_format_pattern('exe')
+
+        patterns_list = [
+            exe_pattern
+        ]
+
+        super().__init__('Executables', patterns_list)
 
 
 
