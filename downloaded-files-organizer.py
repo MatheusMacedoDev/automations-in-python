@@ -19,23 +19,19 @@ class Setup:
 
         self.all_files = self.list_all_downloaded_files()
 
-        self.exe_pattern = create_file_format_pattern('exe')
-        self.xlsx_pattern = create_file_format_pattern('xlsx')
-        self.pptx_pattern = create_file_format_pattern('pptx')
         self.iso_pattern = create_file_format_pattern('iso')
         self.part_pattern = create_file_format_pattern('part')
         self.zip_pattern = create_file_format_pattern('zip')
         self.seven_zip_pattern = create_file_format_pattern('7z')
 
-        self.spreadsheet_group = []
         self.os_image_group = []
-        self.slides_group = []
         self.compacted_group = []
 
         self.file_groups = [
             PdfGroup(),
             ImageGroup(),
-            ExecutableGroup()
+            ExecutableGroup(),
+            OfficeGroup()
         ]
 
         for file in self.all_files:
@@ -47,6 +43,9 @@ class Setup:
         for file_group in self.file_groups:
             print(f'\n-----  {file_group.folder_group_name}  -----\n')
             print(file_group.file_group_list)
+
+        print(f'\n-----  All files  -----\n')
+        print(self.all_files)
 
     
     def list_all_downloaded_files(self):
@@ -124,6 +123,22 @@ class ExecutableGroup(FileGroup):
         ]
 
         super().__init__('Executables', patterns_list)
+
+
+
+class OfficeGroup(FileGroup):
+
+    def __init__(self):
+
+        xlsx_pattern = create_file_format_pattern('xlsx')
+        pptx_pattern = create_file_format_pattern('pptx')
+
+        patterns_list = [
+            xlsx_pattern,
+            pptx_pattern
+        ]
+
+        super().__init__('Office', patterns_list)
 
 
 
