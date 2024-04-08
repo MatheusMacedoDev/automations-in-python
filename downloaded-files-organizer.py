@@ -11,13 +11,13 @@ from pathlib import Path
 download_directory_path = 'C:/Users/mathe/Downloads'
 
 def create_file_format_pattern(format_name):
-    return fr'^[\d\w\s\.\-\+\_\(\)\[\]]+\.{format_name}$'
+    return fr'^[\d\w\s\.\-\+\_\(\)\[\]]+\.({format_name}|{format_name.upper()})$'
 
 class Setup:
 
     def __init__(self):
 
-        self.is_file_pattern = r'^[\d\w\s\.\-\+\_\(\)\[\]]+\.[0-9a-z]{2,5}$'
+        self.is_file_pattern = r'^[\d\w\s\.\-\+\_\(\)\[\]]+\.[0-9A-Za-z]{2,5}$'
 
         self.all_files = self.list_all_downloaded_files()
         self.remaining_files = self.all_files.copy()
@@ -120,12 +120,14 @@ class ImageGroup(FileGroup):
         jpg_pattern = create_file_format_pattern('jpg')
         png_pattern = create_file_format_pattern('png')
         svg_pattern = create_file_format_pattern('svg')
+        heic_pattern = create_file_format_pattern('heic')
 
         patterns_list = [
             jpeg_pattern,
             jpg_pattern,
             png_pattern,
-            svg_pattern
+            svg_pattern,
+            heic_pattern
         ]
 
         super().__init__('Images', patterns_list)
