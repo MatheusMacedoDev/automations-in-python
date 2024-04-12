@@ -21,6 +21,7 @@ class ConverterSetup:
 
 
     def run(self):
+
         original_images = self.list_original_images()
 
         print('Original Images')
@@ -30,6 +31,7 @@ class ConverterSetup:
 
 
     def list_original_images(self):
+
         original_list = []
 
         with scandir(self.original_folder_path) as entries:
@@ -43,17 +45,51 @@ class ConverterSetup:
 
 
     def transform_images(self, original_images):
+
         for original_image_name in original_images:
-            image = Image.open(f'{self.original_folder_path}{original_image_name}')
+
+            image = Image.open(f'{self.original_folder_path}/{original_image_name}')
+
+            print('Imagem Original:')
+            self.log_image_data(image)
+
+            resized_image = self.resize_image(image)
 
             converted_image = image.convert('RGB')
 
+            converted_image_new_path = f'{self.converted_folder_path}/{original_image_name}.{self.final_image_format}'
+
             converted_image.save(
-                fp = f'{self.converted_folder_path}/{original_image_name}.{final_image_format}',
+                fp = converted_image_new_path,
                 optimize = True,
                 quality = self.final_image_quality
             )
 
+            converted_image = Image.open(converted_image_new_path)
+
+            print('Imagem Convertida:')
+            self.log_image_data(converted_image)
+
+
+    def resize_image(self, image):
+
+        new_width = int(image.width * self.final_image_size_percentage)
+        new_height = int(image.height * self.final_image_size_percentage)
+        new_size = (new_width, new_height)
+
+        resized_image = image.resize(new_size)
+
+
+    def log_image_data(self, image):
+
+        print('\n' + '-=' * 20)
+
+        print(f'{image.filename}')
+        print(f'Formato do arquivo: {image.format.upper()}')
+        print(f'Tamanho da imagem: {image.size}')
+        print(f'Tamanho do arquivo: {str(len(image.fp.read())/1000)}Kb')
+
+        print()
 
 
 
