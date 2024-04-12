@@ -24,10 +24,7 @@ class ConverterSetup:
 
         original_images = self.list_original_images()
 
-        print('Original Images')
-        print(original_images)
-
-        self.transform_images(original_images)
+        self.convert_images(original_images)
 
 
     def list_original_images(self):
@@ -42,6 +39,30 @@ class ConverterSetup:
 
         return original_list
 
+
+    def convert_images(self, original_images):
+
+        for original_image_name in original_images:
+
+            image = Image.open(f'{self.original_folder_path}/{original_image_name}')
+
+            converted_image = image.convert('RGB')
+
+            print(original_image_name)
+            print(original_image_name.replace('.HEIC', ''))
+            print(original_image_name.replace('.heic', ''))
+
+            image_format_name = image.format
+            if (image.format.upper() == 'HEIF'):
+                image_format_name = 'HEIC'
+
+            converted_image_new_path = f'{self.converted_folder_path}/{original_image_name.replace(f'.{image_format_name}', '').replace(f'.{image_format_name.upper()}', '')}.{self.final_image_format}'
+
+            converted_image.save(
+                fp = converted_image_new_path,
+            )
+
+            converted_image = Image.open(converted_image_new_path)
 
 
     def transform_images(self, original_images):
