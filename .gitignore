@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# Images
+*.HEIC
+*.heic
+*.png
+*.jpeg
+*.jpg
+
 # Distribution / packaging
 .Python
 build/
