@@ -19,9 +19,15 @@ class ConverterSetup:
         self.original_folder_path = original_folder_path
         self.converted_folder_path = converted_folder_path
 
-        self.original_images = self.list_original_images()
 
-        print(self.original_images)
+    def run(self):
+        original_images = self.list_original_images()
+
+        print('Original Images')
+        print(original_images)
+
+        self.transform_images(original_images)
+
 
     def list_original_images(self):
         original_list = []
@@ -34,10 +40,30 @@ class ConverterSetup:
 
         return original_list
 
-ConverterSetup(
+
+
+    def transform_images(self, original_images):
+        for original_image_name in original_images:
+            image = Image.open(f'{self.original_folder_path}{original_image_name}')
+
+            converted_image = image.convert('RGB')
+
+            converted_image.save(
+                fp = f'{self.converted_folder_path}/{original_image_name}.{final_image_format}',
+                optimize = True,
+                quality = self.final_image_quality
+            )
+
+
+
+
+
+setup = ConverterSetup(
     final_image_format='png',
     final_image_quality=40,
     final_image_size_percentage=0.35,
-    original_folder_path='./original-images/',
-    converted_folder_path='./converted-images/'
+    original_folder_path='./original-images',
+    converted_folder_path='./converted-images'
 )
+
+setup.run()
