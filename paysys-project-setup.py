@@ -9,12 +9,15 @@ class PaySysSetup:
         self.postgres_container = '6d50a892ce74'
         self.pg_admin_container = 'ab4f2da4ba1d'
 
-        pa.PAUSE = .2
+        pa.PAUSE = .5
         
 
     def play(self):
 
         self.open_program_by_search('docker')
+
+        time.sleep(3)
+
         self.open_program_by_search('terminal')
 
         self.open_neovim_project(self.project_path)
