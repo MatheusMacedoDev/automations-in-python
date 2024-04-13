@@ -26,6 +26,10 @@ class ConverterSetup:
 
         self.convert_images(original_images)
 
+        converted_images = self.list_converted_images()
+
+        self.compress_image(converted_images)
+
 
     def list_original_images(self):
 
@@ -39,6 +43,18 @@ class ConverterSetup:
 
         return original_list
 
+    
+    def list_converted_images(self):
+
+        converted_list = []
+
+        with scandir(self.converted_folder_path) as entries:
+            for entry in entries:
+                if not match('.gitkeep', entry.name):
+                    converted_list.append(entry.name)
+
+        return converted_list
+
 
     def convert_images(self, original_images):
 
@@ -47,10 +63,6 @@ class ConverterSetup:
             image = Image.open(f'{self.original_folder_path}/{original_image_name}')
 
             converted_image = image.convert('RGB')
-
-            print(original_image_name)
-            print(original_image_name.replace('.HEIC', ''))
-            print(original_image_name.replace('.heic', ''))
 
             image_format_name = image.format
             if (image.format.upper() == 'HEIF'):
@@ -65,31 +77,21 @@ class ConverterSetup:
             converted_image = Image.open(converted_image_new_path)
 
 
-    def transform_images(self, original_images):
+    def compress_image(self, converted_images):
 
-        for original_image_name in original_images:
+        for converted_image_name in converted_images:
 
-            image = Image.open(f'{self.original_folder_path}/{original_image_name}')
+            converted_image = Image.open(f'{self.converted_folder_path}/{converted_image_name}')
 
-            print('Imagem Original:')
-            self.log_image_data(image)
+            resized_image = self.resize_image(converted_image)
 
-            resized_image = self.resize_image(image)
+            converted_image_new_path = f'{self.converted_folder_path}/{converted_image_name}'
 
-            converted_image = image.convert('RGB')
-
-            converted_image_new_path = f'{self.converted_folder_path}/{original_image_name}.{self.final_image_format}'
-
-            converted_image.save(
+            resized_image.save(
                 fp = converted_image_new_path,
                 optimize = True,
                 quality = self.final_image_quality
             )
-
-            converted_image = Image.open(converted_image_new_path)
-
-            print('Imagem Convertida:')
-            self.log_image_data(converted_image)
 
 
     def resize_image(self, image):
@@ -99,6 +101,8 @@ class ConverterSetup:
         new_size = (new_width, new_height)
 
         resized_image = image.resize(new_size)
+
+        return resized_image
 
 
     def log_image_data(self, image):
@@ -117,8 +121,8 @@ class ConverterSetup:
 
 setup = ConverterSetup(
     final_image_format='png',
-    final_image_quality=40,
-    final_image_size_percentage=0.35,
+    final_image_quality=36,
+    final_image_size_percentage=0.28,
     original_folder_path='./original-images',
     converted_folder_path='./converted-images'
 )
